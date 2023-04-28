@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.User;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.UserDto;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.UserLoginDto;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.repository.UserRepository;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
@@ -30,6 +31,17 @@ public class UserController {
     @GetMapping("/test")
     public String test() {
         return "Hola Mundo!";
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginDto> login(@RequestBody UserLoginDto item) {
+        Optional<User> user = userRepository.findByEmail(item.getEmail());
+
+        if (user.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.FOUND);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping

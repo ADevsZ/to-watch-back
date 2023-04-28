@@ -25,12 +25,14 @@ public class WebSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter();
         authenticationFilter.setAuthenticationManager(authenticationManager);
-        authenticationFilter.setFilterProcessesUrl("/login");
+        authenticationFilter.setFilterProcessesUrl("/token");
 
         return http
+        .cors()
+        .and()
         .csrf()
         .disable()
-        .authorizeRequests()
+        .authorizeHttpRequests()
         .anyRequest()
         .authenticated()
         .and()
