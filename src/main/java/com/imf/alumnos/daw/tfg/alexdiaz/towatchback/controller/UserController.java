@@ -71,11 +71,10 @@ public class UserController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<User> create(@RequestBody UserDto item) {
         try {
             User user = new User();
-            user.setId(item.getId());
             user.setEmail(item.getEmail());
             user.setFirstName(item.getFirstName());
             user.setLastName(item.getLastName());
