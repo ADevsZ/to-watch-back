@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,7 +80,7 @@ public class UserController {
             user.setFirstName(item.getFirstName());
             user.setLastName(item.getLastName());
             user.setLoginName(item.getLoginName());
-            user.setPassword(item.getPassword());
+            user.setPassword(new BCryptPasswordEncoder().encode(item.getPassword()));
 
             User savedItem = userRepository.save(user);
             return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
