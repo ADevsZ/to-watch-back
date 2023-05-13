@@ -17,7 +17,7 @@ public class MediaController {
     @Autowired
     MediaRepository mediaRepository;
 
-    @GetMapping("/films/{id}")
+    @GetMapping("/{id}")
     public Optional<Media> findById(@PathVariable("id") Long id) {
         System.out.println(mediaRepository.findById(id));
         return mediaRepository.findById(id);
