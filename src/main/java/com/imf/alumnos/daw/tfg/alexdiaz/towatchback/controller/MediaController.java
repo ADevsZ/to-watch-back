@@ -28,8 +28,13 @@ public class MediaController {
     }
 
     @GetMapping("/films")
-    public Iterable<Media> findAll() {
-        return mediaRepository.findAll();
+    public Iterable<Media> findAllFilms() {
+        return mediaRepository.findAllByType("Film");
+    }
+
+    @GetMapping("/series")
+    public Iterable<Media> findAllSeries() {
+        return mediaRepository.findAllByType("Serie");
     }
 
     public long count() {
