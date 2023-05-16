@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +16,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.User;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.UserDto;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.UserLoginDto;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.UserNickDto;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.repository.UserRepository;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.security.TokenUtils;
 
 @RestController
 @RequestMapping("/api/user")
@@ -108,5 +112,14 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
+    }
+
+    @GetMapping("/nick")
+    public ResponseEntity getUserByToken(@RequestParam("token") String token) {
+        UsernamePasswordAuthenticationToken usernamePAT = TokenUtils.getAuthenticationToken(token);
+        String email = usernamePAT.getName();
+        UserNickDto userNickDto = new UserNickDto();
+        userNickDto.setNick(userRepository.findByEmail(email).get().getLoginName());
+        return new ResponseEntity<>(userNickDto, HttpStatus.OK);
     }
 }
