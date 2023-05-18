@@ -8,113 +8,99 @@ DROP TABLE IF EXISTS `db_to_watch`.`media`;
 DROP TABLE IF EXISTS `db_to_watch`.`media_premieres`;
 DROP TABLE IF EXISTS `db_to_watch`.`streaming_platforms`;
 
-CREATE TABLE `db_to_watch`.`users` (
+CREATE TABLE `media` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `first_name` varchar(255) DEFAULT NULL,
-  `last_name` varchar(255) DEFAULT NULL,
-  `login_name` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`));
-
-CREATE TABLE `db_to_watch`.`media` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `type` varchar(45) DEFAULT NULL,
-  `title` varchar(45) DEFAULT NULL,
+  `type` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci DEFAULT NULL,
+  `title` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci DEFAULT NULL,
   `release_date` date DEFAULT NULL,
-  `nationality` varchar(45) DEFAULT NULL,
-  `synopsis` varchar(255) DEFAULT NULL,
+  `nationality` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci DEFAULT NULL,
+  `synopsis` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci DEFAULT NULL,
   `duration` int DEFAULT NULL,
   `average_duration` int DEFAULT NULL,
   `sessions_number` int DEFAULT NULL,
   `episodes_number` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`));
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
-CREATE TABLE `db_to_watch`.`streaming_platforms` (
-  `platform_id` BIGINT NOT NULL,
-  `platform_name` VARCHAR(45) NULL,
+CREATE TABLE `media_premieres` (
+  `premiere_id` bigint NOT NULL,
+  `media_type` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `media_title` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `release_date` timestamp NOT NULL,
+  PRIMARY KEY (`premiere_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+CREATE TABLE `users` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci DEFAULT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci DEFAULT NULL,
+  `login_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+CREATE TABLE `ratings_x_media` (
+  `media_id` bigint NOT NULL,
+  `user_id` bigint NOT NULL,
+  `rating` int NOT NULL,
+  PRIMARY KEY (`media_id`,`user_id`),
+  KEY `ratings_x_media_fk_02_idx` (`user_id`),
+  CONSTRAINT `ratings_x_media_fk_01` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ratings_x_media_fk_02` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+CREATE TABLE `streaming_platforms` (
+  `platform_id` bigint NOT NULL,
+  `platform_name` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`platform_id`),
-  UNIQUE INDEX `platform_id_UNIQUE` (`platform_id` ASC) VISIBLE);
+  UNIQUE KEY `platform_id_UNIQUE` (`platform_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
-CREATE TABLE `db_to_watch`.`media_premieres` (
-  `premiere_id` BIGINT NOT NULL,
-  `media_type` VARCHAR(45) NOT NULL,
-  `media_title` VARCHAR(255) NOT NULL,
-  `release_date` TIMESTAMP NOT NULL,
-  PRIMARY KEY (`premiere_id`));
+CREATE TABLE `streaming_platforms_x_media` (
+  `platform_id` bigint NOT NULL,
+  `media_id` bigint NOT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  PRIMARY KEY (`platform_id`,`media_id`),
+  KEY `streaming_platforms_x_media_fk_02_idx` (`media_id`),
+  CONSTRAINT `streaming_platforms_x_media_fk_01` FOREIGN KEY (`platform_id`) REFERENCES `streaming_platforms` (`platform_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `streaming_platforms_x_media_fk_02` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
-CREATE TABLE `db_to_watch`.`watchlists` (
-  `watchlist_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NULL,
-  `active` TINYINT NOT NULL DEFAULT 0,
-  `user_id` BIGINT NULL,
+CREATE TABLE `users_logs` (
+  `log_id` bigint NOT NULL AUTO_INCREMENT,
+  `code` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci DEFAULT NULL,
+  `creation_date` timestamp NOT NULL,
+  `user_id` bigint NOT NULL,
+  PRIMARY KEY (`log_id`),
+  UNIQUE KEY `log_id_UNIQUE` (`log_id`),
+  KEY `users_logs_fk_01_idx` (`user_id`),
+  CONSTRAINT `users_logs_fk_01` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+CREATE TABLE `watchlists` (
+  `watchlist_id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci DEFAULT NULL,
+  `active` tinyint NOT NULL DEFAULT '0',
+  `user_id` bigint DEFAULT NULL,
   PRIMARY KEY (`watchlist_id`),
-  UNIQUE INDEX `watchlist_id_UNIQUE` (`watchlist_id` ASC) VISIBLE,
-  INDEX `watchlists_fk_01_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `watchlists_fk_01`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `db_to_watch`.`users` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION);
+  UNIQUE KEY `watchlist_id_UNIQUE` (`watchlist_id`),
+  KEY `watchlists_fk_01_idx` (`user_id`),
+  CONSTRAINT `watchlists_fk_01` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 CREATE TABLE `watchlists_x_media` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `watchlist_id` bigint NOT NULL,
   `media_id` bigint NOT NULL,
-  `order` int NOT NULL,
+  `orden` int NOT NULL,
   `viewed` tinyint NOT NULL DEFAULT '0',
-  PRIMARY KEY (`watchlist_id`,`media_id`),
+  PRIMARY KEY (`id`),
   KEY `watchlists_x_media_fk_02_idx` (`media_id`),
+  KEY `watchlists_x_media_fk_01_idx` (`watchlist_id`),
   CONSTRAINT `watchlists_x_media_fk_01` FOREIGN KEY (`watchlist_id`) REFERENCES `watchlists` (`watchlist_id`) ON DELETE CASCADE,
-  CONSTRAINT `watchlists_x_media_fk_02` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE);
-
-
-CREATE TABLE `db_to_watch`.`ratings_x_media` (
-  `media_id` BIGINT NOT NULL,
-  `user_id` BIGINT NOT NULL,
-  `rating` INT NOT NULL,
-  PRIMARY KEY (`media_id`, `user_id`),
-  INDEX `ratings_x_media_fk_02_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `ratings_x_media_fk_01`
-    FOREIGN KEY (`media_id`)
-    REFERENCES `db_to_watch`.`media` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `ratings_x_media_fk_02`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `db_to_watch`.`users` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
-
-CREATE TABLE `db_to_watch`.`users_logs` (
-  `log_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `code` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(255) NULL,
-  `creation_date` TIMESTAMP NOT NULL,
-  `user_id` BIGINT NOT NULL,
-  PRIMARY KEY (`log_id`),
-  UNIQUE INDEX `log_id_UNIQUE` (`log_id` ASC) VISIBLE,
-  INDEX `users_logs_fk_01_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `users_logs_fk_01`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `db_to_watch`.`users` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
-
-CREATE TABLE `db_to_watch`.`streaming_platforms_x_media` (
-  `platform_id` BIGINT NOT NULL,
-  `media_id` BIGINT NOT NULL,
-  `url` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`platform_id`, `media_id`),
-  INDEX `streaming_platforms_x_media_fk_02_idx` (`media_id` ASC) VISIBLE,
-  CONSTRAINT `streaming_platforms_x_media_fk_01`
-    FOREIGN KEY (`platform_id`)
-    REFERENCES `db_to_watch`.`streaming_platforms` (`platform_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `streaming_platforms_x_media_fk_02`
-    FOREIGN KEY (`media_id`)
-    REFERENCES `db_to_watch`.`media` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
+  CONSTRAINT `watchlists_x_media_fk_02` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;

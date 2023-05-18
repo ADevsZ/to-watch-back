@@ -48,21 +48,21 @@ INSERT INTO `db_to_watch`.`streaming_platforms` (`platform_id`, `platform_name`)
 INSERT INTO `db_to_watch`.`streaming_platforms` (`platform_id`, `platform_name`) VALUES (4, 'Disney+');
 
 INSERT INTO `db_to_watch`.`watchlists` (`watchlist_id`, `name`, `active`, `user_id`) VALUES (1, 'Mi top de prueba', 1, 1);
-INSERT INTO `db_to_watch`.`watchlists` (`watchlist_id`, `name`, `active`, `user_id`) VALUES (2, 'Mi top de prueba 2', 2, 1);
+INSERT INTO `db_to_watch`.`watchlists` (`watchlist_id`, `name`, `active`, `user_id`) VALUES (2, 'Mi top de prueba 2', 0, 1);
 
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (1, 2, 1, 0);
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (1, 13, 2, 1);
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (1, 21, 3, 0);
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (1, 10, 4, 1);
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (1, 1, 5, 0);
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (1, 7, 6, 1);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (1, 1, 2, 1, 0);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (2, 1, 13, 2, 1);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (3, 1, 21, 3, 0);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (4, 1, 10, 4, 1);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (5, 1, 1, 5, 0);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (6, 1, 7, 6, 1);
 
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (2, 3, 5, 1);
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (2, 4, 1, 0);
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (2, 15, 2, 0);
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (2, 23, 4, 1);
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (2, 24, 6, 1);
-INSERT INTO `db_to_watch`.`watchlists_x_media` (`watchlist_id`, `media_id`, `order`, `viewed`) VALUES (2, 5, 3, 0);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (7, 2, 3, 5, 1);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (8, 2, 4, 1, 0);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (9, 2, 15, 2, 0);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (10, 2, 23, 4, 1);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (11,2, 24, 6, 1);
+INSERT INTO `db_to_watch`.`watchlists_x_media` (`id`, `watchlist_id`, `media_id`, `orden`, `viewed`) VALUES (12, 2, 5, 3, 0);
 
 INSERT INTO `db_to_watch`.`streaming_platforms_x_media` (`platform_id`, `media_id`, `url`) VALUES (1, 1, 'https://www.netflix.com/es/title/70230640');
 INSERT INTO `db_to_watch`.`streaming_platforms_x_media` (`platform_id`, `media_id`, `url`) VALUES (2, 1, 'https://www.hbomax.com/es/es/feature/urn:hbo:feature:GYjOKBgPsgouhCwEAAAAG');
