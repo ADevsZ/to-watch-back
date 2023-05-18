@@ -46,11 +46,14 @@ CREATE TABLE `ratings_x_media` (
   `media_id` bigint NOT NULL,
   `user_id` bigint NOT NULL,
   `rating` int NOT NULL,
-  PRIMARY KEY (`media_id`,`user_id`),
+  `rating_id` bigint NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`rating_id`),
+  UNIQUE KEY `rating_id_UNIQUE` (`rating_id`),
+  KEY `ratings_x_media_fk_01_idx` (`media_id`),
   KEY `ratings_x_media_fk_02_idx` (`user_id`),
   CONSTRAINT `ratings_x_media_fk_01` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ratings_x_media_fk_02` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `streaming_platforms` (
   `platform_id` bigint NOT NULL,

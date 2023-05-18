@@ -66,6 +66,7 @@ public class WatchlistController {
             this.watchlistService.createWatchlist(watchlistPostDto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -76,6 +77,7 @@ public class WatchlistController {
             this.watchlistService.deleteWatchlist(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -86,6 +88,7 @@ public class WatchlistController {
             WatchlistActiveDto watchlistActiveDto = this.watchlistService.getActiveWatchlist(userId);
             return new ResponseEntity<>(watchlistActiveDto, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -96,6 +99,7 @@ public class WatchlistController {
             this.watchlistService.updateViewedWatchlistMedia(watchlistId, mediaId, viewed);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -106,6 +110,7 @@ public class WatchlistController {
             this.watchlistService.updateActiveWatchlist(id, active);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch(Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

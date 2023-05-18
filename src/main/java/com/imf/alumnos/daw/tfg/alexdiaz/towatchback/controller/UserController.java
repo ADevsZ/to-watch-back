@@ -115,11 +115,18 @@ public class UserController {
     }
 
     @GetMapping("/nick")
-    public ResponseEntity getUserByToken(@RequestParam("token") String token) {
+    public ResponseEntity<UserNickDto> getUserByToken(@RequestParam("token") String token) {
         UsernamePasswordAuthenticationToken usernamePAT = TokenUtils.getAuthenticationToken(token);
         String email = usernamePAT.getName();
-        UserNickDto userNickDto = new UserNickDto();
-        userNickDto.setNick(userRepository.findByEmail(email).get().getLoginName());
+
+        Optional<User> optional = this.userRepository.findByEmail(email);
+        UserNickDto userNickDto = null;
+
+        if (optional.isPresent()) {
+            userNickDto = new UserNickDto();
+            userNickDto.setNick(optional.get().getLoginName());
+        }
+        
         return new ResponseEntity<>(userNickDto, HttpStatus.OK);
     }
 }

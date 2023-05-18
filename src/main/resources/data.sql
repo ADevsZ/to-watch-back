@@ -105,4 +105,11 @@ INSERT INTO `db_to_watch`.`streaming_platforms_x_media` (`platform_id`, `media_i
 INSERT INTO `db_to_watch`.`streaming_platforms_x_media` (`platform_id`, `media_id`, `url`) VALUES (1, 29, 'https://www.netflix.com/es/title/81092221');
 INSERT INTO `db_to_watch`.`streaming_platforms_x_media` (`platform_id`, `media_id`, `url`) VALUES (2, 29, 'https://www.hbomax.com/es/es/feature/urn:hbo:feature:GYGOrjQfhvKCWowEAAAAE');
 INSERT INTO `db_to_watch`.`streaming_platforms_x_media` (`platform_id`, `media_id`, `url`) VALUES (2, 30, 'https://www.hbomax.com/es/es/feature/urn:hbo:feature:GYDbfcQGssU-dEAEAAAAI');
+
+INSERT INTO `db_to_watch`.`ratings_x_media` (`media_id`, `user_id`, `rating`, `rating_id`) VALUES (1, 1, 3, 1);
+INSERT INTO `db_to_watch`.`ratings_x_media` (`media_id`, `user_id`, `rating`, `rating_id`) VALUES (1, 1, 2, 2);
+INSERT INTO `db_to_watch`.`ratings_x_media` (`media_id`, `user_id`, `rating`, `rating_id`) VALUES (1, 1, 1, 3);
+INSERT INTO `db_to_watch`.`ratings_x_media` (`media_id`, `user_id`, `rating`, `rating_id`) VALUES (1, 1, 5, 4);
+INSERT INTO `db_to_watch`.`ratings_x_media` (`media_id`, `user_id`, `rating`, `rating_id`) VALUES (1, 1, 4, 5);
+
 COMMIT;
