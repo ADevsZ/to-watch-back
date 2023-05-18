@@ -1,11 +1,10 @@
 package com.imf.alumnos.daw.tfg.alexdiaz.towatchback.repository;
 
-import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.Media;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.Watchlist;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.WatchlistMedia;
 
 public interface WatchlistRepositoryCustom {
-    Iterable<Watchlist> findAllByUserId(long userId);
-    Iterable<Media> findAllMediaById(long id);
+    Iterable<Watchlist> findAllWatchlistByUserId(long userId);
+    Iterable<WatchlistMedia> findAllMediaWatchlistById(long watchlistId);
     void updateWatchlistMedia(WatchlistMedia wm);
 }
