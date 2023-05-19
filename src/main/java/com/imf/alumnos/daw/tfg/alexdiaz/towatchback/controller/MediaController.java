@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.MediaDto;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.MediaPremiereDto;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.StreamingPlatformMediaDto;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.service.MediaPremiereService;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.service.MediaService;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.service.StreamingPlatformService;
 
@@ -21,6 +23,9 @@ public class MediaController {
 
     @Autowired
     StreamingPlatformService streamingPlatformService;
+
+    @Autowired
+    MediaPremiereService mediaPremiereService;
 
     @GetMapping("/{id}")
     public ResponseEntity<MediaDto> findById(@PathVariable("id") Long id) {
@@ -60,6 +65,17 @@ public class MediaController {
         try {
             Iterable<StreamingPlatformMediaDto> listUrl = this.streamingPlatformService.getAllStreamingPlatformUrlsByMediaId(mediaId);
             return new ResponseEntity<>(listUrl, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/premieres")
+    public ResponseEntity<Iterable<MediaPremiereDto>> getAllMediaPremieres() {
+        try {
+            Iterable<MediaPremiereDto> lisIterable = this.mediaPremiereService.getAllMediaPremiere();
+            return new ResponseEntity<>(lisIterable, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
