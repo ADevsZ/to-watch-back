@@ -1,9 +1,5 @@
 package com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model;
 
-import java.util.Date;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,17 +16,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users_logs")
-public class UserLogs {
+@Table(name = "streaming_platforms_x_media")
+public class StreamingPlatformsMedia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long logId;
-    private String code;
-    private String description;
-    @Basic
-    @Column(name = "creation_date")
-    private Date creationDate;
+    private long id;
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "platform_id")
+    private StreamingPlatform platform;
+    @ManyToOne
+    @JoinColumn(name = "media_id")
+    private Media media;
+    private String url;
 }

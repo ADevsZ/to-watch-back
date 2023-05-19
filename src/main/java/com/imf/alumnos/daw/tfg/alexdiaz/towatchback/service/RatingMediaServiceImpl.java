@@ -44,9 +44,9 @@ public class RatingMediaServiceImpl implements RatingMediaService{
             RatingMedia ratingMedia = new RatingMedia(newRatingId, rating, media.get(), user.get());
             this.ratingMediaRepository.save(ratingMedia);
             if (media.get().getType().equals("Film")) {
-                this.userServiceImpl.createUserLog(this.userServiceImpl.construirUserLog("TW03", UserLogsEnum.PELICULA_VALORADA.label, new Date(), token));
+                this.userServiceImpl.createUserLog(this.userServiceImpl.construirUserLog("TW03", user.get().getLoginName() + UserLogsEnum.PELICULA_VALORADA.label + media.get().getTitle(), new Date(), null, userId));
             } else {
-                this.userServiceImpl.createUserLog(this.userServiceImpl.construirUserLog("TW04", UserLogsEnum.SERIE_VALORADA.label, new Date(), token));
+                this.userServiceImpl.createUserLog(this.userServiceImpl.construirUserLog("TW04", user.get().getLoginName() + UserLogsEnum.SERIE_VALORADA.label + media.get().getTitle(), new Date(), null, userId));
             }
         }
     }

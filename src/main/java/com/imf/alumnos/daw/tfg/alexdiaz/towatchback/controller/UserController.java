@@ -81,14 +81,14 @@ public class UserController {
         }
     }
 
-    // @GetMapping("/{userId}/logs")
-    // public ResponseEntity<List<UserLogsDto>> getAllUserLogs(@PathVariable("userId") long userId) {
-    //     try {
-    //         List<UserLogsDto> list = this.userService.getAllUserLogs(userId);
-    //         return new ResponseEntity<>(list, HttpStatus.OK);
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-    // }
+    @GetMapping("/{userId}/logs")
+    public ResponseEntity<List<UserLogsDto>> getAllUserLogs(@PathVariable("userId") long userId) {
+        try {
+            List<UserLogsDto> list = this.userService.getAllUserLogs(userId);
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

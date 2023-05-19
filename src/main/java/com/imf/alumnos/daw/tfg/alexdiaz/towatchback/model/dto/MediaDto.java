@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MediaDto {
-    private long id;
     private String type;
     private String title;
     private Date releaseDate;

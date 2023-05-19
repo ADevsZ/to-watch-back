@@ -54,7 +54,10 @@ public class UserServiceImpl implements UserService{
 
         this.userRepository.save(user);
 
-        // this.createUserLog(this.construirUserLog("TW01", UserLogsEnum.USUARIO_REGISTRADO.label, new Date(), token));
+        Optional<User> userLog = this.userRepository.findByEmail(user.getEmail());
+        if (userLog.isPresent()) {
+            this.createUserLog(this.construirUserLog("TW01", UserLogsEnum.USUARIO_REGISTRADO.label + userLog.get().getLoginName(), new Date(), null, userLog.get().getId()));
+        }
     }
 
     @Override
@@ -70,7 +73,7 @@ public class UserServiceImpl implements UserService{
 
             this.userRepository.save(user);
 
-            // this.createUserLog(this.construirUserLog("TW02", UserLogsEnum.USUARIO_REGISTRADO.label, new Date(), token));
+            this.createUserLog(this.construirUserLog("TW02", UserLogsEnum.USUARIO_REGISTRADO.label + user.getLoginName(), new Date(), null, user.getId()));
         }
     }
 
@@ -90,22 +93,24 @@ public class UserServiceImpl implements UserService{
         return userNickDto;
     }
 
-    // @Override
-    // public List<UserLogsDto> getAllUserLogs(long userId) {
-    //     UserLogs optional = this.userLogsRepository.getAllUserLogsById(userId);
-    //     List<UserLogsDto> list = new ArrayList<>();
+    @Override
+    public List<UserLogsDto> getAllUserLogs(long userId) {
+        List<UserLogs> optional = this.userLogsRepository.getAllUserLogsById(userId);
+        List<UserLogsDto> list = new ArrayList<>();
 
-        // for (UserLogs ul: optional) {
-        //     UserLogsDto userLogsDto = new UserLogsDto(ul.getCode(), ul.getDescription(), ul.getCreationDate());
-        //     list.add(userLogsDto);
-        // }
+        for (UserLogs ul: optional) {
+            UserLogsDto userLogsDto = new UserLogsDto(ul.getCode(), ul.getDescription(), ul.getCreationDate());
+            list.add(userLogsDto);
+        }
 
-    //     return list;
-    // }
+        return list;
+    }
 
     @Override
-    public UserLogs construirUserLog(String code, String description, Date creationDate, String token) {
-        long userId = this.getUserIdByToken(token);
+    public UserLogs construirUserLog(String code, String description, Date creationDate, String token, long userId) {
+        if (userId == 0) {
+            userId = this.getUserIdByToken(token);
+        }
         Optional<User> user = this.userRepository.findById(userId);
         long logId = this.userLogsRepository.count() + 1;
         UserLogs userLogs = null;

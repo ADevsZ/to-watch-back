@@ -63,10 +63,12 @@ CREATE TABLE `streaming_platforms` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 CREATE TABLE `streaming_platforms_x_media` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `platform_id` bigint NOT NULL,
   `media_id` bigint NOT NULL,
   `url` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
-  PRIMARY KEY (`platform_id`,`media_id`),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `streaming_platforms_x_media_fk_02_idx` (`media_id`),
   CONSTRAINT `streaming_platforms_x_media_fk_01` FOREIGN KEY (`platform_id`) REFERENCES `streaming_platforms` (`platform_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `streaming_platforms_x_media_fk_02` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

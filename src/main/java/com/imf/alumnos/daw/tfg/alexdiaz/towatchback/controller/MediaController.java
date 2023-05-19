@@ -1,45 +1,68 @@
 package com.imf.alumnos.daw.tfg.alexdiaz.towatchback.controller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.Media;
-import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.repository.MediaRepository;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.MediaDto;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.StreamingPlatformMediaDto;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.service.MediaService;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.service.StreamingPlatformService;
 
 @RestController
 @RequestMapping("/api/media")
 public class MediaController {
     @Autowired
-    MediaRepository mediaRepository;
+    MediaService mediaService;
+
+    @Autowired
+    StreamingPlatformService streamingPlatformService;
 
     @GetMapping("/{id}")
-    public Optional<Media> findById(@PathVariable("id") Long id) {
-        System.out.println(mediaRepository.findById(id));
-        return mediaRepository.findById(id);
-    }
-
-    public boolean existsById(Long id) {
-        return mediaRepository.existsById(id);
+    public ResponseEntity<MediaDto> findById(@PathVariable("id") Long id) {
+        try {
+            MediaDto mDto = this.mediaService.getMediaFindById(id);
+            return new ResponseEntity<MediaDto>(mDto, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/films")
-    public Iterable<Media> findAllFilms() {
-        return mediaRepository.findAllByType("Film");
+    public ResponseEntity<Iterable<MediaDto>> findAllFilms() {
+        try {
+            Iterable<MediaDto> lIterable = this.mediaService.findAllFilms();
+            return new ResponseEntity<>(lIterable, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/series")
-    public Iterable<Media> findAllSeries() {
-        return mediaRepository.findAllByType("Serie");
-    }
-
-    public long count() {
-        return mediaRepository.count();
+    public ResponseEntity<Iterable<MediaDto>> findAllSeries() {
+        try {
+            Iterable<MediaDto> lIterable = this.mediaService.findAllSeries();
+            return new ResponseEntity<>(lIterable, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
-    
+    @GetMapping("/{mediaId}/platforms")
+    public ResponseEntity<Iterable<StreamingPlatformMediaDto>> getAllPlatformsByMedia(@PathVariable("mediaId") long mediaId) {
+        try {
+            Iterable<StreamingPlatformMediaDto> listUrl = this.streamingPlatformService.getAllStreamingPlatformUrlsByMediaId(mediaId);
+            return new ResponseEntity<>(listUrl, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

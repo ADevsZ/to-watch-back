@@ -17,7 +17,7 @@ public interface UserService {
     void updateDataUser(long userId, UserDto userDto, String token);
     UserNickDto getLoginNameByToken(String token);
     long getUserIdByToken(String token);
-    // List<UserLogsDto> getAllUserLogs(long userId);
-    UserLogs construirUserLog(String code, String description, Date creationDate, String token);
+    List<UserLogsDto> getAllUserLogs(long userId);
+    UserLogs construirUserLog(String code, String description, Date creationDate, String token, long userId);
     void createUserLog(UserLogs userLogs);
 }
