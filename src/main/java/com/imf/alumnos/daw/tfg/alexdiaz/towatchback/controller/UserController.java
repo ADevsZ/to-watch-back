@@ -1,15 +1,11 @@
 package com.imf.alumnos.daw.tfg.alexdiaz.towatchback.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.User;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.UserDto;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.UserLoginDto;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.UserLogsDto;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.UserNickDto;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.repository.UserRepository;
-import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.security.TokenUtils;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
@@ -33,100 +30,65 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("/test")
-    public String test() {
-        return "Hola Mundo!";
-    }
+    @Autowired
+    UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<UserLoginDto> login(@RequestBody UserLoginDto item) {
-        Optional<User> user = userRepository.findByEmail(item.getEmail());
+        try {
+            Optional<User> user = userService.userLogin(item);
 
-        if (user.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.FOUND);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (user.isPresent()) {
+                return new ResponseEntity<>(HttpStatus.FOUND);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<User>> getAll() {
+    @PostMapping("/register")
+    public ResponseEntity<HttpStatus> create(@RequestBody UserDto item, String token) {
         try {
-            List<User> items = new ArrayList<>();
-
-            userRepository.findAll().forEach(items::add);
-
-            if (items.isEmpty())
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-            return new ResponseEntity<>(items, HttpStatus.OK);
+            this.userService.registerUser(item, token);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
-        Optional<User> existingItemOptional = userRepository.findById(id);
-
-        if (existingItemOptional.isPresent()) {
-            return new ResponseEntity<>(existingItemOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<User> create(@RequestBody UserDto item) {
-        try {
-            User user = new User();
-            user.setEmail(item.getEmail());
-            user.setFirstName(item.getFirstName());
-            user.setLastName(item.getLastName());
-            user.setLoginName(item.getLoginName());
-            user.setPassword(new BCryptPasswordEncoder().encode(item.getPassword()));
-
-            User savedItem = userRepository.save(user);
-            return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
-    }
-
     @PutMapping("{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody UserDto item) {
-        Optional<User> existingItemOptional = userRepository.findById(id);
-        if (existingItemOptional.isPresent()) {
-            User existingItem = existingItemOptional.get();
-            return new ResponseEntity<>(userRepository.save(existingItem), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
-        try {
-            userRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<HttpStatus> update(@PathVariable Long id, @RequestBody UserDto item, String token) {
+        try  {
+            this.userService.updateDataUser(id, item, token);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/nick")
     public ResponseEntity<UserNickDto> getUserByToken(@RequestParam("token") String token) {
-        UsernamePasswordAuthenticationToken usernamePAT = TokenUtils.getAuthenticationToken(token);
-        String email = usernamePAT.getName();
-
-        Optional<User> optional = this.userRepository.findByEmail(email);
-        UserNickDto userNickDto = null;
-
-        if (optional.isPresent()) {
-            userNickDto = new UserNickDto();
-            userNickDto.setNick(optional.get().getLoginName());
+        try {
+            UserNickDto userNickDto = this.userService.getLoginNameByToken(token);
+            return new ResponseEntity<>(userNickDto, HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        
-        return new ResponseEntity<>(userNickDto, HttpStatus.OK);
     }
+
+    // @GetMapping("/{userId}/logs")
+    // public ResponseEntity<List<UserLogsDto>> getAllUserLogs(@PathVariable("userId") long userId) {
+    //     try {
+    //         List<UserLogsDto> list = this.userService.getAllUserLogs(userId);
+    //         return new ResponseEntity<>(list, HttpStatus.OK);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
 }

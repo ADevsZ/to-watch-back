@@ -112,4 +112,5 @@ INSERT INTO `db_to_watch`.`ratings_x_media` (`media_id`, `user_id`, `rating`, `r
 INSERT INTO `db_to_watch`.`ratings_x_media` (`media_id`, `user_id`, `rating`, `rating_id`) VALUES (1, 1, 5, 4);
 INSERT INTO `db_to_watch`.`ratings_x_media` (`media_id`, `user_id`, `rating`, `rating_id`) VALUES (1, 1, 4, 5);
 
+INSERT INTO `db_to_watch`.`users_logs` (`log_id`, `code`, `description`, `creation_date`, `user_id`) VALUES (1,'TW01','test01', sysdate(), 1);
 COMMIT;

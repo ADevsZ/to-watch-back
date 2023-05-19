@@ -1,5 +1,6 @@
 package com.imf.alumnos.daw.tfg.alexdiaz.towatchback.service;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.Media;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.RatingMedia;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.User;
+import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.UserLogsEnum;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.repository.MediaRepository;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.repository.RatingMediaRepository;
 import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.repository.RatingMediaRepositoryCustom;
@@ -41,6 +43,11 @@ public class RatingMediaServiceImpl implements RatingMediaService{
         if (media.isPresent() && user.isPresent()) {
             RatingMedia ratingMedia = new RatingMedia(newRatingId, rating, media.get(), user.get());
             this.ratingMediaRepository.save(ratingMedia);
+            if (media.get().getType().equals("Film")) {
+                this.userServiceImpl.createUserLog(this.userServiceImpl.construirUserLog("TW03", UserLogsEnum.PELICULA_VALORADA.label, new Date(), token));
+            } else {
+                this.userServiceImpl.createUserLog(this.userServiceImpl.construirUserLog("TW04", UserLogsEnum.SERIE_VALORADA.label, new Date(), token));
+            }
         }
     }
 
