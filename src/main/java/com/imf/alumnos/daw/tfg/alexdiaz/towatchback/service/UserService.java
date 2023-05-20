@@ -20,4 +20,5 @@ public interface UserService {
     List<UserLogsDto> getAllUserLogs(long userId);
     UserLogs construirUserLog(String code, String description, Date creationDate, String token, long userId);
     void createUserLog(UserLogs userLogs);
+    UserDto getUserByToken(String token);
 }

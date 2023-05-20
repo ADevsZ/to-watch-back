@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @GetMapping("/nick")
-    public ResponseEntity<UserNickDto> getUserByToken(@RequestParam("token") String token) {
+    public ResponseEntity<UserNickDto> getNickUserByToken(@RequestParam("token") String token) {
         try {
             UserNickDto userNickDto = this.userService.getLoginNameByToken(token);
             return new ResponseEntity<>(userNickDto, HttpStatus.OK);
@@ -86,6 +86,16 @@ public class UserController {
         try {
             List<UserLogsDto> list = this.userService.getAllUserLogs(userId);
             return new ResponseEntity<>(list, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<UserDto> getUserByToken(@RequestParam("token") String token) {
+        try  {
+            return new ResponseEntity<>(this.userService.getUserByToken(token), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

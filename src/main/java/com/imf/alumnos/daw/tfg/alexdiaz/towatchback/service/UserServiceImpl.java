@@ -124,4 +124,19 @@ public class UserServiceImpl implements UserService{
     public void createUserLog(UserLogs userLogs) {
         this.userLogsRepository.save(userLogs);
     }
+
+    @Override
+    public UserDto getUserByToken(String token) {
+        UsernamePasswordAuthenticationToken usernamePAT = TokenUtils.getAuthenticationToken(token);
+        String email = usernamePAT.getName();
+        Optional<User> user = this.userRepository.findByEmail(email);
+        UserDto uDto = null;
+
+        if (user.isPresent()) {
+            uDto = new UserDto(user.get().getId(), user.get().getFirstName(), user.get().getLastName(), user.get().getLoginName(), null, email);
+        }
+
+        return uDto;
+    }
+    
 }
