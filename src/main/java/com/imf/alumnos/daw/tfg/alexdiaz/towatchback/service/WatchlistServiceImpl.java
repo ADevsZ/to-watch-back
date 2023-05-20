@@ -118,10 +118,15 @@ public class WatchlistServiceImpl implements WatchlistService{
         Watchlist watchlist = this.watchlistRepository.findActiveByUserId(userId);
         Iterable<WatchlistMedia> lMedias = this.watchlistMediaRepository.findByIdAndOrdered(watchlist.getWatchlistId());
         WatchlistActiveDto watchlistActiveDto = null;
+        String mediaTitle = null;
 
         List<WatchlistMediaActiveDto> list = new ArrayList<>();
         for (WatchlistMedia wMedia: lMedias) {
-            WatchlistMediaActiveDto watchlistMediaActiveDto = new WatchlistMediaActiveDto(wMedia.getMedia().getId(), wMedia.getOrden(), wMedia.isViewed());
+            Optional<Media> media = this.mediaRepository.findById(wMedia.getMedia().getId());
+            if (media.isPresent()) {
+                mediaTitle = media.get().getTitle();
+            }
+            WatchlistMediaActiveDto watchlistMediaActiveDto = new WatchlistMediaActiveDto(wMedia.getMedia().getId(), wMedia.getOrden(), wMedia.isViewed(), mediaTitle);
             list.add(watchlistMediaActiveDto);
         }
 

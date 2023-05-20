@@ -11,4 +11,5 @@ public class WatchlistMediaActiveDto {
     private long mediaId;
     private int orden;
     private boolean viewed;
+    private String mediaTitle;
 }

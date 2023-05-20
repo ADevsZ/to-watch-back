@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WatchlistActiveDto {
     private long watchlistId;
-    private String name;
+    private String watchlistName;
     private List<WatchlistMediaActiveDto> mediaList;
 }
