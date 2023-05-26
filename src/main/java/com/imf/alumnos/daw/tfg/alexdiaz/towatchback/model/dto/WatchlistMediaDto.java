@@ -13,4 +13,7 @@ public class WatchlistMediaDto {
     private boolean viewed;
     private long watchlistId;
     private long mediaId;
+    private String type;
+    private String mediaTitle;
+    private String releaseDate;
 }

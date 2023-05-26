@@ -43,20 +43,25 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void registerUser(UserDto userDto, String token) {
-        User user = new User();
+    public void registerUser(UserDto userDto, String token) throws Exception {
+        Optional<User> userOptional = this.userRepository.findByEmail(userDto.getEmail());
 
-        user.setEmail(userDto.getEmail());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setLoginName(userDto.getLoginName());
-        user.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
+        if (userOptional.isPresent()) {
+            throw new Exception("El usuario con este correo ya se encuentra registrado.");
+        } else {
+            User user = new User();
+            user.setEmail(userDto.getEmail());
+            user.setFirstName(userDto.getFirstName());
+            user.setLastName(userDto.getLastName());
+            user.setLoginName(userDto.getLoginName());
+            user.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
 
-        this.userRepository.save(user);
+            this.userRepository.save(user);
 
-        Optional<User> userLog = this.userRepository.findByEmail(user.getEmail());
-        if (userLog.isPresent()) {
-            this.createUserLog(this.construirUserLog("TW01", UserLogsEnum.USUARIO_REGISTRADO.label + userLog.get().getLoginName(), new Date(), null, userLog.get().getId()));
+            Optional<User> userLog = this.userRepository.findByEmail(user.getEmail());
+            if (userLog.isPresent()) {
+                this.createUserLog(this.construirUserLog("TW01", UserLogsEnum.USUARIO_REGISTRADO.label + userLog.get().getLoginName(), new Date(), null, userLog.get().getId()));
+            }
         }
     }
 
@@ -73,7 +78,7 @@ public class UserServiceImpl implements UserService{
 
             this.userRepository.save(user);
 
-            this.createUserLog(this.construirUserLog("TW02", UserLogsEnum.USUARIO_REGISTRADO.label + user.getLoginName(), new Date(), null, user.getId()));
+            this.createUserLog(this.construirUserLog("TW02", UserLogsEnum.MODIFICACION_DATOS_USUARIO.label + user.getLoginName(), new Date(), null, user.getId()));
         }
     }
 

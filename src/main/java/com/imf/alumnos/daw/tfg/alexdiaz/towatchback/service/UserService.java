@@ -13,7 +13,7 @@ import com.imf.alumnos.daw.tfg.alexdiaz.towatchback.model.dto.UserNickDto;
 
 public interface UserService {
     Optional<User> userLogin(UserLoginDto userLoginDto);
-    void registerUser(UserDto userDto, String token);
+    void registerUser(UserDto userDto, String token) throws Exception;
     void updateDataUser(long userId, UserDto userDto, String token);
     UserNickDto getLoginNameByToken(String token);
     long getUserIdByToken(String token);

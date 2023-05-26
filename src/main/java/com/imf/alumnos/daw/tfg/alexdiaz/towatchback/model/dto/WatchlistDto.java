@@ -11,4 +11,5 @@ public class WatchlistDto {
     private long watchlistId;
     private String name;
     private boolean active;
+    private long mediaCount;
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WatchlistMediaActiveDto {
     private long mediaId;
+    private String type;
     private int orden;
     private boolean viewed;
     private String mediaTitle;

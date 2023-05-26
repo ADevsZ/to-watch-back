@@ -1,5 +1,7 @@
 package com.imf.alumnos.daw.tfg.alexdiaz.towatchback.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,9 +63,9 @@ public class MediaController {
     }
     
     @GetMapping("/{mediaId}/platforms")
-    public ResponseEntity<Iterable<StreamingPlatformMediaDto>> getAllPlatformsByMedia(@PathVariable("mediaId") long mediaId) {
+    public ResponseEntity<List<StreamingPlatformMediaDto>> getAllPlatformsByMedia(@PathVariable("mediaId") long mediaId) {
         try {
-            Iterable<StreamingPlatformMediaDto> listUrl = this.streamingPlatformService.getAllStreamingPlatformUrlsByMediaId(mediaId);
+            List<StreamingPlatformMediaDto> listUrl = this.streamingPlatformService.getAllStreamingPlatformUrlsByMediaId(mediaId);
             return new ResponseEntity<>(listUrl, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

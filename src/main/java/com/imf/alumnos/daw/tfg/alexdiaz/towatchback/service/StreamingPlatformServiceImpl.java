@@ -1,5 +1,7 @@
 package com.imf.alumnos.daw.tfg.alexdiaz.towatchback.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,7 @@ public class StreamingPlatformServiceImpl implements StreamingPlatformService{
     private StreamingPlatformRepositoryCustom streamingPlatformRepositoryCustom;
 
     @Override
-    public Iterable<StreamingPlatformMediaDto> getAllStreamingPlatformUrlsByMediaId(long mediaId) {
+    public List<StreamingPlatformMediaDto> getAllStreamingPlatformUrlsByMediaId(long mediaId) {
         return this.streamingPlatformRepositoryCustom.getAllUrlsStreamingPlatformsByMediaId(mediaId);
     }
     

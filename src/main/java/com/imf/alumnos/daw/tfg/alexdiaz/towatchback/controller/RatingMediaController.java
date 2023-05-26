@@ -39,4 +39,15 @@ public class RatingMediaController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/{mediaId}/rate")
+    public ResponseEntity<Integer> getRatingMediaByUser(@PathVariable("mediaId") long mediaId, @RequestParam("userId") long userId) {
+        try {
+            Integer ratingUser = this.ratingMediaServiceImpl.getRatingMediaByUser(mediaId, userId);
+            return new ResponseEntity<>(ratingUser, HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.imf.alumnos.daw.tfg.alexdiaz.towatchback.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class WatchlistRepositoryImpl implements WatchlistRepositoryCustom{
 
     @Override
     public Iterable<WatchlistMedia> findAllMediaWatchlistById(long watchlistId) {
-        Iterable<WatchlistMedia> wIterable = null;
+        List<WatchlistMedia> wIterable = null;
         try {
             wIterable = this.watchlistMediaRepository.findByIdAndOrdered(watchlistId);
         } catch (Exception e) {

@@ -114,4 +114,14 @@ public class WatchlistController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/{id}/active/count")
+    public ResponseEntity<Long> getCountWatchlistMediaActiveNotViewed(@PathVariable("id") long id) {
+        try {
+            return new ResponseEntity<>(this.watchlistService.countWatchlistMediaActiveNotViewed(id), HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

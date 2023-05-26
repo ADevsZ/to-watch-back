@@ -6,4 +6,5 @@ import org.springframework.data.repository.query.Param;
 public interface RatingMediaRepositoryCustom {
     @Query(name = "SELECT AVG(rm.rating) FROM RatingMedia rm WHERE rm.media.id = :mediaId")
     Double calculateAverageRatingMedia(@Param("mediaId") long mediaId);
+    int getRatingMediaByUser(@Param("mediaId") long mediaId, @Param("userId") long userId);
 }

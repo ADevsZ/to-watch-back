@@ -16,4 +16,5 @@ public interface WatchlistService {
     WatchlistActiveDto getActiveWatchlist(long userId);
     void updateViewedWatchlistMedia(long watchlistId, long mediaId, boolean viewed);
     void updateActiveWatchlist(long watchlistId, boolean active);
+    Long countWatchlistMediaActiveNotViewed(long watchlistId);
 }

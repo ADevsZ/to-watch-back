@@ -55,4 +55,9 @@ public class RatingMediaServiceImpl implements RatingMediaService{
     public Double getAverageRatingMedia(long mediaId) {
         return this.ratingMediaRepositoryCustom.calculateAverageRatingMedia(mediaId);
     }
+
+    @Override
+    public Integer getRatingMediaByUser(long mediaId, long userId) {
+        return this.ratingMediaRepositoryCustom.getRatingMediaByUser(mediaId, userId);
+    }
 }

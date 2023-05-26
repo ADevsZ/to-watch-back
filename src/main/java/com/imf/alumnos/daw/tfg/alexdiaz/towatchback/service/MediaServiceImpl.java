@@ -21,7 +21,8 @@ public class MediaServiceImpl implements MediaService{
         Optional<Media> optional = this.mediaRepository.findById(id);
         MediaDto mDto = null;
         if (optional.isPresent()) {
-            mDto = new MediaDto(optional.get().getType(), optional.get().getTitle(), 
+            mDto = new MediaDto(optional.get().getId(),
+            optional.get().getType(), optional.get().getTitle(), 
             optional.get().getReleaseDate(), optional.get().getNationality(), 
             optional.get().getSynopsis(), optional.get().getDuration(), 
             optional.get().getAverageDuration(), optional.get().getSessionsNumber(), 
@@ -36,7 +37,7 @@ public class MediaServiceImpl implements MediaService{
         List<MediaDto> mIterable = new ArrayList<>();
 
         for (Media m: lIterable) {
-            MediaDto mDto = new MediaDto(m.getType(), m.getTitle(), m.getReleaseDate(), m.getNationality(), 
+            MediaDto mDto = new MediaDto(m.getId(), m.getType(), m.getTitle(), m.getReleaseDate(), m.getNationality(), 
             m.getSynopsis(), m.getDuration(), m.getAverageDuration(), m.getSessionsNumber(), m.getEpisodesNumber());
             mIterable.add(mDto);
         }
@@ -50,11 +51,12 @@ public class MediaServiceImpl implements MediaService{
         List<MediaDto> mIterable = new ArrayList<>();
 
         for (Media m: lIterable) {
-            MediaDto mDto = new MediaDto(m.getType(), m.getTitle(), m.getReleaseDate(), m.getNationality(), 
+            MediaDto mDto = new MediaDto(m.getId(), m.getType(), m.getTitle(), m.getReleaseDate(), m.getNationality(), 
             m.getSynopsis(), m.getDuration(), m.getAverageDuration(), m.getSessionsNumber(), m.getEpisodesNumber());
             mIterable.add(mDto);
         }
 
         return mIterable;
     }
+    
 }
